@@ -1,4 +1,3 @@
-
 package com.springhow.example.helloworld;
 
 import org.springframework.boot.SpringApplication;
@@ -28,4 +27,3 @@ public class HelloWorldApplication extends SpringBootServletInitializer {
     }
 
 }
-
