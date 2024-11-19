@@ -1,58 +1,58 @@
+
 pipeline {
     agent any
-
-    tools {
-        // Ensure Maven is available in Jenkins
+     tools {
         maven 'Maven' 
-    }
-
+        }
     stages {
-        stage('Checkout') {
-            steps {
-                // Pull the code from the Git repository
-                checkout scm
+        stage("Test"){
+            steps{
+                // mvn test
+                sh "mvn test"
+                slackSend channel: 'youtubejenkins', message: 'Job Started'
+                
             }
+            
         }
-        
-        stage('Build') {
-            steps {
-                // Compile the code
-                sh 'mvn clean compile'
+        stage("Build"){
+            steps{
+                sh "mvn package"
+                
             }
+            
         }
-        
-        stage('Test') {
-            steps {
-                // Run tests
-                sh 'mvn test'
+        stage("Deploy on Test"){
+            steps{
+                // deploy on container -> plugin
+                deploy adapters: [tomcat9(credentialsId: 'tomcatserverdetails1', path: '', url: 'http://192.168.0.118:8080')], contextPath: '/app', war: '**/*.war'
+              
             }
+            
         }
-        
-        stage('Package') {
-            steps {
-                // Package the application into a JAR file
-                sh 'mvn package'
+        stage("Deploy on Prod"){
+             input {
+                message "Should we continue?"
+                ok "Yes we Should"
             }
-        }
-        
-        stage('Archive Artifacts') {
-            steps {
-                // Archive the JAR file as a build artifact
-                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+            
+            steps{
+                // deploy on container -> plugin
+                deploy adapters: [tomcat9(credentialsId: 'tomcatserverdetails1', path: '', url: 'http://192.168.0.119:8080')], contextPath: '/app', war: '**/*.war'
+
             }
         }
     }
-
-    post {
-        always {
-            // Cleanup and send a message or email on build completion
-            echo "Pipeline execution completed."
+    post{
+        always{
+            echo "========always========"
         }
-        success {
-            echo "Build succeeded!"
+        success{
+            echo "========pipeline executed successfully ========"
+             slackSend channel: 'youtubejenkins', message: 'Success'
         }
-        failure {
-            echo "Build failed."
+        failure{
+            echo "========pipeline execution failed========"
+             slackSend channel: 'youtubejenkins', message: 'Job Failed'
         }
     }
 }
