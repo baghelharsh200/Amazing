@@ -1,19 +1,10 @@
-# My Java Project
+# Spring Boot Hello World Example Project.
 
-A simple Java project with Maven as the build tool. This project includes:
 
-- A `HelloWorld` Java program.
-- Unit tests written using JUnit 5.
-
-## Prerequisites
-
-Before you begin, ensure you have the following installed:
-
-- **Java 11** or later
-- **Maven** (Apache Maven 3.6+)
-- **Git** (optional, for version control)
-
-## Project Structure
-
-The directory structure of the project is as follows:
-
+- check is user a root user.
+- apt-get update
+- apt-get install maven
+- mvn test
+- mvn package
+- apt-get install tomcat9
+- cp -rvf target/hello-world-0.0.1-SNAPSHOT.war /var/lib/tomcat9/webapps/app.war
