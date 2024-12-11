@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 public class UserService {
 
+    // Method to add a user to the database
     public boolean addUser(String name, String email) {
         String query = "INSERT INTO users (name, email) VALUES (?, ?)";
         try (Connection connection = DatabaseConnection.getConnection();
@@ -16,12 +17,13 @@ public class UserService {
             preparedStatement.setString(2, email);
             return preparedStatement.executeUpdate() > 0;
 
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
+    // Method to fetch all users from the database
     public String getAllUsers() {
         String query = "SELECT * FROM users";
         StringBuilder users = new StringBuilder();
@@ -33,10 +35,11 @@ public class UserService {
             while (resultSet.next()) {
                 users.append("ID: ").append(resultSet.getInt("id"))
                      .append(", Name: ").append(resultSet.getString("name"))
-                     .append(", Email: ").append(resultSet.getString("email")).append("<br>");
+                     .append(", Email: ").append(resultSet.getString("email"))
+                     .append("<br>");
             }
 
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
