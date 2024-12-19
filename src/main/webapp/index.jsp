@@ -5,6 +5,6 @@
 </head>
 <body>
     <h1>Welcome to Madrid Payment App</h1>
-    <a href="users">Go to application Management</a>
+    <a href="users">Go to users Management</a>
 </body>
 </html>
